@@ -78,26 +78,22 @@ public class Transactions extends JFrame implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent ae) {
-//        if(ae.getSource()==b1){
-//            setVisible(false);
-//            new Deposit(pin).setVisible(true);
-//        }else if(ae.getSource()==b2){
-//            setVisible(false);
-//            new Withdrawl(pin).setVisible(true);
-//        }else if(ae.getSource()==b3){
-//            setVisible(false);
-//            new FastCash(pin).setVisible(true);
-//        }else if(ae.getSource()==b4){
-//            new MiniStatement(pin).setVisible(true);
-//        }else if(ae.getSource()==b5){
-//            setVisible(false);
-//            new Pin(pin).setVisible(true);
-//        }else if(ae.getSource()==b6){
-//            this.setVisible(false);
-//            new BalanceEnquiry(pin).setVisible(true);
-//        }else if(ae.getSource()==b7){
-//            System.exit(0);
-//        }
+        if(ae.getSource()==b1){
+            setVisible(false);
+            new Deposit(pin).setVisible(true);
+        }else if(ae.getSource()==b2) {
+            setVisible(false);
+            new Withdrawl(pin).setVisible(true);
+        }else if(ae.getSource()==b6){
+            this.setVisible(false);
+            try {
+                new BalanceEnquiry(pin).setVisible(true);
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        }else if(ae.getSource()==b7){
+            System.exit(0);
+        }
     }
 
     public static void main(String[] args) {

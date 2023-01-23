@@ -1,4 +1,85 @@
 package com.example.Bank_system;
 
-public class BalanceEnquiry {
+import java.awt.*;
+import java.awt.event.*;
+import java.sql.*;
+import javax.swing.*;
+import java.util.*;
+
+import static com.example.Bank_system.SQLConnect.*;
+
+class BalanceEnquiry extends JFrame implements ActionListener {
+
+    JTextField t1, t2;
+    JButton b1, b2, b3;
+    JLabel l1, l2, l3;
+    String pin;
+
+    BalanceEnquiry(String pin) throws ClassNotFoundException {
+        this.pin = pin;
+
+        ImageIcon i1 = new ImageIcon(ClassLoader.getSystemResource("ASimulatorSystem/icons/atm.jpg"));
+        Image i2 = i1.getImage().getScaledInstance(1000, 1180, Image.SCALE_DEFAULT);
+        ImageIcon i3 = new ImageIcon(i2);
+        JLabel l3 = new JLabel(i3);
+        l3.setBounds(0, 0, 960, 1080);
+        add(l3);
+
+        l1 = new JLabel();
+        l1.setForeground(Color.WHITE);
+        l1.setFont(new Font("System", Font.BOLD, 16));
+
+        b1 = new JButton("BACK");
+
+        setLayout(null);
+
+        l1.setBounds(190, 350, 400, 35);
+        l3.add(l1);
+
+        b1.setBounds(390, 633, 150, 35);
+        l3.add(b1);
+
+        int balance = 0;
+
+        try {
+            Class.forName("com.postgresql.jdbc.Driver");
+            Connection connection = DriverManager.getConnection(DB_DATABASE, DB_USERNAME, DB_PASSWORD);
+            String q1 = "select * from bank where pin = '"+pin+"'";
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(q1);
+
+            while(rs.next()) {
+                if(rs.getString("mode").equals("Deposit")) {
+                    balance += Integer.parseInt("amount");
+                }else {
+                    balance -= Integer.parseInt("amount");
+                }
+            }
+        }catch (RuntimeException te) {
+            throw new RuntimeException(te);
+        }catch (SQLException e) {
+            System.out.println("Error in sql" + e);
+        }
+
+        l1.setText("Твой баланс "+balance);
+
+        b1.addActionListener(this);
+
+        setSize(960, 1080);
+        setUndecorated(true);
+        setLocation(500, 0);
+        setVisible(true);
+
+        addWindowListener(new MyWindowAdapter());
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        setVisible(false);
+        new Transactions(pin).setVisible(false);
+    }
+
+    public static void main(String[] args) throws ClassNotFoundException {
+        new BalanceEnquiry("").setVisible(true);
+    }
 }
