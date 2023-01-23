@@ -87,14 +87,14 @@ public class Withdrawl extends JFrame implements ActionListener{
                         }
                     }
                     if(balance < Integer.parseInt(amount)){
-                        JOptionPane.showMessageDialog(null, "Insuffient Balance");
+                        JOptionPane.showMessageDialog(null, "Недостаточный баланс");
                         return;
                     }
 
                     String q2 = "insert into bank values('"+pin+"', '"+date+"', 'Withdrawl', '"+amount+"')";
                     PreparedStatement preparedStatement = connection.prepareStatement(q2);
                     preparedStatement.executeUpdate();
-                    JOptionPane.showMessageDialog(null, "Rs. "+amount+" Debited Successfully");
+                    JOptionPane.showMessageDialog(null, "Rs. "+amount+" Списано успешно");
 
                     setVisible(false);
                     new Transactions(pin).setVisible(true);
